@@ -1,0 +1,5 @@
+node_modules
+dist
+.DS_Store
+src/assets/logo-pizzarica-*.webp
+public/favicon.png

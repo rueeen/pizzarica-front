@@ -1,0 +1,2 @@
+import Logo from'./Logo';import'../styles/Galeria.css';
+export default function Galeria({site}){return <section className="section gallery" aria-labelledby="gallery-title"><div className="container"><h2 id="gallery-title">Un pedacito de PizzArica</h2><div className="gallery__grid">{site.galeria.map((photo,i)=><figure key={i}>{photo?<img src={photo.src} alt={photo.alt} loading="lazy"/>:<div className="gallery__placeholder"><span>Próxima foto</span><small>TODO: agregar foto real</small></div>}<Logo className="gallery__watermark"/></figure>)}</div></div></section>}
