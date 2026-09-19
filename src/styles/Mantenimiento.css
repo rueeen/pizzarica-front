@@ -55,13 +55,13 @@
 }
 
 .maintenance__copy {
-  margin-top: 38px;
+  max-width: 560px;
+  margin-top: 34px;
+  margin-inline: auto;
 }
 
 .maintenance__copy h1,
-.maintenance__message,
-.maintenance__schedule,
-.maintenance__actions {
+.maintenance__message {
   opacity: 0;
   transform: translateY(12px);
   transition:
@@ -73,18 +73,8 @@
   transition-delay: 510ms;
 }
 
-.maintenance__schedule {
-  transition-delay: 570ms;
-}
-
-.maintenance__actions {
-  transition-delay: 630ms;
-}
-
 .maintenance.is-visible .maintenance__copy h1,
-.maintenance.is-visible .maintenance__message,
-.maintenance.is-visible .maintenance__schedule,
-.maintenance.is-visible .maintenance__actions {
+.maintenance.is-visible .maintenance__message {
   opacity: 1;
   transform: none;
 }
@@ -104,37 +94,11 @@
   font-weight: 600;
 }
 
-.maintenance__schedule {
-  margin: 14px 0 0;
-  font-weight: 600;
-}
-
-.maintenance__actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  margin-top: 26px;
-}
-
-.maintenance__instagram {
-  padding: 10px 2px;
-  font-weight: 600;
-  text-underline-offset: 4px;
-}
-
-.maintenance .button:focus-visible,
-.maintenance__instagram:focus-visible {
-  outline-color: var(--blanco);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .maintenance__panel,
   .maintenance__logo,
   .maintenance__copy h1,
-  .maintenance__message,
-  .maintenance__schedule,
-  .maintenance__actions {
+  .maintenance__message {
     opacity: 1;
     transform: none;
   }
@@ -148,18 +112,5 @@
   .maintenance__panel {
     padding: 30px 12.5% 24px;
     border-radius: 36px;
-  }
-
-  .maintenance__copy {
-    margin-top: 32px;
-  }
-
-  .maintenance__actions {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .maintenance .button {
-    width: 100%;
   }
 }

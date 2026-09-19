@@ -7,6 +7,11 @@ export const site = {
   referencia: 'Frente a un punto de referencia por confirmar', // TODO: dato real
   mapaEmbedUrl: '', // TODO: URL embed de Google Maps
   zonaHoraria: 'America/Santiago',
+  mantenimiento: {
+    // Alternativas: 'Estamos en el horno' / 'Volvemos al horno' / 'Estamos amasando el sitio'
+    titulo: 'Sitio en mantención',
+    mensaje: 'Pronto, más noticias.',
+  },
   hero: { tituloLinea1: 'Pizza al paso,', tituloLinea2: 'hecha en Arica', apoyo: 'Ingredientes frescos y sabor local, preparados al momento en nuestro food truck.' }, // TODO: texto definitivo
   horarios: [
     { dia: 0, abre: null, cierra: null }, { dia: 1, abre: null, cierra: null },
