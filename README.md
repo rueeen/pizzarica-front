@@ -20,6 +20,23 @@ npm run preview
 
 La opción `base: './'` permite publicar el contenido de `dist/` en GitHub Pages o Netlify.
 
+## Modo mantenimiento
+
+Vite inyecta las variables de entorno al compilar. Por eso, cambiar
+`VITE_MANTENIMIENTO` en producción exige volver a compilar y publicar el sitio.
+
+- **En local:** edita `.env`, define `VITE_MANTENIMIENTO=true` y ejecuta
+  `npm run dev`. Usa `false` para mostrar la landing normalmente.
+- **En Netlify:** define `VITE_MANTENIMIENTO` en **Site settings → Environment
+  variables** y lanza un nuevo deploy.
+- **En GitHub Pages:** define `VITE_MANTENIMIENTO` en el workflow de build (o en
+  una variable del repositorio) y vuelve a publicar.
+
+Para previsualizar la pantalla sin cambiar `.env` ni recompilar, añade
+`?mantenimiento=1` a la URL. `?mantenimiento=0` fuerza la landing. Estos
+parámetros son solo una ayuda de prueba y no constituyen una medida de seguridad
+ni protegen el sitio.
+
 ## Editar el contenido
 
 Todo el contenido editable está en [`src/data/site.js`](src/data/site.js): WhatsApp, mensaje inicial, Instagram, dirección, referencia, horarios, menú, pasos y galería. Los valores provisionales están señalados con `TODO: dato real`.

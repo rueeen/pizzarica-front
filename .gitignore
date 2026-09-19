@@ -1,5 +1,6 @@
 node_modules
 dist
+.env
 .DS_Store
 src/assets/logo-pizzarica-*.webp
 public/favicon.png
