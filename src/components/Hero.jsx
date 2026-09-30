@@ -1,2 +1,47 @@
-import{useEffect,useState}from'react';import Logo from'./Logo';import EstadoHorario from'./EstadoHorario';import{whatsappUrl}from'../data/site';import{useIdioma}from'../i18n/IdiomaContext';import'../styles/Hero.css';
-export default function Hero({site}){const{t}=useIdioma();const[ready,setReady]=useState(false);useEffect(()=>{requestAnimationFrame(()=>setReady(true))},[]);return <section id="inicio" aria-labelledby="hero-title" className={`hero ${ready?'is-ready':''}`}><span id="header-sentinel" className="hero__sentinel"/><div className="hero__yellow"/><div className="hero__teal"/><div className="hero__inner container"><div className="hero__panel"><Logo className="hero__logo"/><div className="food-truck">FOOD TRUCK</div><EstadoHorario site={site}/></div><div className="hero__copy"><h1 id="hero-title"><span>{t('hero.linea1')}</span><span>{t('hero.linea2')}</span></h1><p>{t('hero.apoyo')}</p><div className="hero__actions"><a href="#menu" className="button button--light">{t('hero.verMenu')}</a><a href={whatsappUrl()} className="button button--whatsapp" target="_blank" rel="noopener noreferrer">{t('whatsapp.cta')}</a></div></div></div></section>}
+import { useEffect, useState } from 'react';
+import Logo from './Logo';
+import EstadoHorario from './EstadoHorario';
+import { whatsappUrl } from '../data/site';
+import { useIdioma } from '../i18n/IdiomaContext';
+import '../styles/Hero.css';
+export default function Hero({ site }) {
+  const { t } = useIdioma();
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    requestAnimationFrame(() => setReady(true));
+  }, []);
+  return (
+    <section id="inicio" aria-labelledby="hero-title" className={`hero ${ready ? 'is-ready' : ''}`}>
+      <span id="header-sentinel" className="hero__sentinel" />
+      <div className="hero__yellow" />
+      <div className="hero__teal" />
+      <div className="hero__inner container">
+        <div className="hero__panel">
+          <Logo className="hero__logo" />
+          <div className="food-truck">FOOD TRUCK</div>
+          <EstadoHorario site={site} />
+        </div>
+        <div className="hero__copy">
+          <h1 id="hero-title">
+            <span>{t('hero.linea1')}</span>
+            <span>{t('hero.linea2')}</span>
+          </h1>
+          <p>{t('hero.apoyo')}</p>
+          <div className="hero__actions">
+            <a href="#menu" className="button button--light">
+              {t('hero.verMenu')}
+            </a>
+            <a
+              href={whatsappUrl()}
+              className="button button--whatsapp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('whatsapp.cta')}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

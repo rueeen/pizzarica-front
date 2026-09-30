@@ -19,7 +19,14 @@ export function IdiomaProvider({ children }) {
     localStorage.setItem(STORAGE_KEY, idioma);
     document.documentElement.lang = idioma;
   }, [idioma]);
-  const value = useMemo(() => ({ idioma, setIdioma, t: clave => textos[idioma]?.[clave] ?? textos.es[clave] ?? clave }), [idioma]);
+  const value = useMemo(
+    () => ({
+      idioma,
+      setIdioma,
+      t: (clave) => textos[idioma]?.[clave] ?? textos.es[clave] ?? clave,
+    }),
+    [idioma],
+  );
   return <IdiomaContext.Provider value={value}>{children}</IdiomaContext.Provider>;
 }
 
