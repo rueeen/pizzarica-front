@@ -4,6 +4,11 @@ import EstadoHorario from './EstadoHorario';
 import { whatsappUrl } from '../data/site';
 import { useIdioma } from '../i18n/IdiomaContext';
 import '../styles/Hero.css';
+
+const imagePath = (file) => `${import.meta.env.BASE_URL}generated-images/${file}`;
+const porcion360 = imagePath('porcion-360.webp');
+const porcion720 = imagePath('porcion-720.webp');
+const porcion1080 = imagePath('porcion-1080.webp');
 export default function Hero({ site }) {
   const { t } = useIdioma();
   const [ready, setReady] = useState(false);
@@ -15,6 +20,17 @@ export default function Hero({ site }) {
       <span id="header-sentinel" className="hero__sentinel" />
       <div className="hero__yellow" />
       <div className="hero__teal" />
+      <img
+        className="hero__pizza"
+        src={porcion720}
+        srcSet={`${porcion360} 360w, ${porcion720} 720w, ${porcion1080} 1080w`}
+        sizes="(min-width: 1400px) 420px, 38vw"
+        width="1080"
+        height="886"
+        fetchPriority="high"
+        alt=""
+        aria-hidden="true"
+      />
       <div className="hero__inner container">
         <div className="hero__panel">
           <Logo className="hero__logo" />

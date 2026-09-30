@@ -31,9 +31,7 @@ export default function ComoPedir() {
       <div className="order__panel container">
         <h2 id="order-title">{t('pedido.comoPedir')}</h2>
         <div className="steps">
-          <svg viewBox="0 0 100 2" preserveAspectRatio="none" aria-hidden="true">
-            <path pathLength="100" d="M0 1h100" />
-          </svg>
+          <span className="steps__line" aria-hidden="true" />
           {pasos.map((paso, i) => (
             <div className="step" style={{ '--delay': `${i * 400}ms` }} key={paso}>
               <span>{i + 1}</span>

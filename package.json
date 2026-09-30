@@ -4,10 +4,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "predev": "npm run imagenes",
     "dev": "vite",
+    "prebuild": "npm run imagenes",
     "build": "vite build",
     "preview": "vite preview",
     "logo": "node scripts/recortar-logo.mjs",
+    "imagenes": "node scripts/optimizar-imagenes.mjs",
     "format": "prettier --write src"
   },
   "dependencies": {

@@ -12,6 +12,11 @@ import { useIdioma } from '../i18n/IdiomaContext';
 import PedidoPanel from './PedidoPanel';
 import '../styles/Menu.css';
 
+const imagePath = (file) => `${import.meta.env.BASE_URL}generated-images/${file}`;
+const ibiza480 = imagePath('pizza-ibiza-480.webp');
+const ibiza960 = imagePath('pizza-ibiza-960.webp');
+const ibiza1440 = imagePath('pizza-ibiza-1440.webp');
+
 const money = new Intl.NumberFormat('es-CL', {
   style: 'currency',
   currency: 'CLP',
@@ -206,6 +211,7 @@ function CategoryContent({
   labelledBy,
   baseSeleccionada,
   onBaseChange,
+  mostrarImagen = false,
 }) {
   const { idioma, t } = useIdioma();
   const contexto = contextoCategorias[categoria.id];
@@ -217,6 +223,18 @@ function CategoryContent({
         {contexto && <p>{contexto[idioma] ?? contexto.es}</p>}
         {categoria.id === 'batidos' && <small>{t('menu.sabores')}</small>}
       </header>
+      {categoria.id === 'pizzas' && mostrarImagen && (
+        <img
+          className="menu-pizza-banner"
+          src={ibiza960}
+          srcSet={`${ibiza480} 480w, ${ibiza960} 960w, ${ibiza1440} 1440w`}
+          sizes="(max-width: 1023px) calc(100vw - 48px), 816px"
+          width="1440"
+          height="1080"
+          loading="lazy"
+          alt={t('menu.pizzaFotoAlt')}
+        />
+      )}
       {categoria.id === 'jugos' && (
         <div className="juice-bases">
           <strong>{t('menu.base')}</strong>
@@ -376,6 +394,7 @@ export default function Menu() {
                   labelledBy={`tab-${active}`}
                   baseSeleccionada={baseSeleccionada}
                   onBaseChange={setBaseSeleccionada}
+                  mostrarImagen
                 />
               </div>
             )}
