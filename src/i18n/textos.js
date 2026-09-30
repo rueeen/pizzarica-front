@@ -175,6 +175,12 @@ Object.assign(textos.es, {
   'pedido.agregado': 'Agregado',
   'pedido.cerrar': 'Cerrar pedido',
   'pedido.urlLarga': 'El pedido es demasiado largo. Reduce el pedido o escríbenos directamente.',
+  'pedido.agregados': 'Agregados',
+  'pedido.agregarIngrediente': '+ Agregado',
+  'pedido.listo': 'Listo',
+  'pedido.duplicar': 'Duplicar',
+  'pedido.quitarAgregado': 'Quitar agregado',
+  'pedido.subtotal': 'Subtotal',
 });
 Object.assign(textos.en, {
   'pedido.comoPedir': 'How to order',
@@ -199,6 +205,12 @@ Object.assign(textos.en, {
   'pedido.agregado': 'Added',
   'pedido.cerrar': 'Close order',
   'pedido.urlLarga': 'The order is too long. Reduce it or message us directly.',
+  'pedido.agregados': 'Add-ons',
+  'pedido.agregarIngrediente': '+ Add-on',
+  'pedido.listo': 'Done',
+  'pedido.duplicar': 'Duplicate',
+  'pedido.quitarAgregado': 'Remove add-on',
+  'pedido.subtotal': 'Subtotal',
 });
 Object.assign(textos.pt, {
   'pedido.comoPedir': 'Como pedir',
@@ -223,6 +235,12 @@ Object.assign(textos.pt, {
   'pedido.agregado': 'Adicionado',
   'pedido.cerrar': 'Fechar pedido',
   'pedido.urlLarga': 'O pedido é longo demais. Reduza-o ou escreva diretamente.',
+  'pedido.agregados': 'Adicionais',
+  'pedido.agregarIngrediente': '+ Adicional',
+  'pedido.listo': 'Pronto',
+  'pedido.duplicar': 'Duplicar',
+  'pedido.quitarAgregado': 'Remover adicional',
+  'pedido.subtotal': 'Subtotal',
 });
 Object.assign(textos.es, {
   'arica.carrusel': 'Lugares para visitar en Arica',

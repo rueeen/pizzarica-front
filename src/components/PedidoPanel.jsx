@@ -3,15 +3,123 @@ import { usePedido } from '../context/PedidoContext';
 import { useIdioma } from '../i18n/IdiomaContext';
 import { nombreProducto, nombreVariante } from './Menu';
 import { site } from '../data/site';
+import { agregados, categoriasConAgregados, productos } from '../data/carta';
 const money = new Intl.NumberFormat('es-CL', {
   style: 'currency',
   currency: 'CLP',
   maximumFractionDigits: 0,
 });
+const idsConAgregados = new Set(
+  categoriasConAgregados.flatMap((categoria) => productos[categoria].map((item) => item.id)),
+);
+
+function AgregadosLinea({ item }) {
+  const { idioma, t } = useIdioma();
+  const { alternarAgregado } = usePedido();
+  const [abierto, setAbierto] = useState(false);
+  const seleccionados = agregados.filter((agregado) => item.agregados.includes(agregado.id));
+
+  useEffect(() => {
+    if (!abierto) return undefined;
+    const cerrarConEscape = (event) => {
+      if (event.key === 'Escape') setAbierto(false);
+    };
+    document.addEventListener('keydown', cerrarConEscape);
+    return () => document.removeEventListener('keydown', cerrarConEscape);
+  }, [abierto]);
+
+  if (!idsConAgregados.has(item.id)) return null;
+  return (
+    <div className="line-addons">
+      {seleccionados.length > 0 && (
+        <div className="addon-chips" aria-label={t('pedido.agregados')}>
+          {seleccionados.map((agregado) => (
+            <button
+              className="addon-chip"
+              key={agregado.id}
+              onClick={() => alternarAgregado(item.key, agregado.id)}
+              aria-label={`${t('pedido.quitarAgregado')} ${agregado.nombre[idioma] ?? agregado.nombre.es}`}
+            >
+              {agregado.nombre[idioma] ?? agregado.nombre.es} +{money.format(agregado.precio)} ×
+            </button>
+          ))}
+        </div>
+      )}
+      <button
+        className="addon-toggle"
+        onClick={() => setAbierto((valor) => !valor)}
+        aria-expanded={abierto}
+      >
+        {t('pedido.agregarIngrediente')}
+      </button>
+      {abierto && (
+        <div className="addon-picker">
+          {[800, 1000, 1200].map((precio) => (
+            <div className="addon-group" key={precio}>
+              <strong>+{money.format(precio)}</strong>
+              <div>
+                {agregados
+                  .filter((agregado) => agregado.precio === precio)
+                  .map((agregado) => (
+                    <button
+                      key={agregado.id}
+                      aria-pressed={item.agregados.includes(agregado.id)}
+                      onClick={() => alternarAgregado(item.key, agregado.id)}
+                    >
+                      {agregado.nombre[idioma] ?? agregado.nombre.es}
+                    </button>
+                  ))}
+              </div>
+            </div>
+          ))}
+          <button className="addon-done" onClick={() => setAbierto(false)}>
+            {t('pedido.listo')}
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DesglosePrecio({ item }) {
+  const { idioma, t } = useIdioma();
+  const seleccionados = agregados.filter((agregado) => item.agregados.includes(agregado.id));
+  const subtotal =
+    (item.precioUnitario + seleccionados.reduce((suma, agregado) => suma + agregado.precio, 0)) *
+    item.cantidad;
+  return (
+    <div className="line-price-breakdown">
+      <span>
+        <span>{nombreProducto(item.id, idioma)}</span>
+        <strong>{money.format(item.precioUnitario * item.cantidad)}</strong>
+      </span>
+      {seleccionados.map((agregado) => (
+        <span key={agregado.id}>
+          <span>+ {agregado.nombre[idioma] ?? agregado.nombre.es}</span>
+          <strong>{money.format(agregado.precio * item.cantidad)}</strong>
+        </span>
+      ))}
+      <span className="line-subtotal">
+        <span>{t('pedido.subtotal')}</span>
+        <strong>{money.format(subtotal)}</strong>
+      </span>
+    </div>
+  );
+}
+
 export default function PedidoPanel({ onClose }) {
   const { idioma, t } = useIdioma();
-  const { items, quitar, cambiarCantidad, vaciar, nota, setNota, total, cantidadTotal } =
-    usePedido();
+  const {
+    items,
+    quitar,
+    cambiarCantidad,
+    duplicarLinea,
+    vaciar,
+    nota,
+    setNota,
+    total,
+    cantidadTotal,
+  } = usePedido();
   const [confirmando, setConfirmando] = useState(false),
     [aviso, setAviso] = useState('');
   const timer = useRef();
@@ -26,10 +134,20 @@ export default function PedidoPanel({ onClose }) {
     timer.current = setTimeout(() => setConfirmando(false), 4000);
   };
   const enviar = () => {
-    const lineas = items.map(
-      (item) =>
-        `• ${item.cantidad}x ${nombreProducto(item.id, idioma)}${item.variante ? ` (${nombreVariante(item.variante, idioma, t)})` : ''} - ${money.format(item.precioUnitario * item.cantidad)}`,
-    );
+    const lineas = items.flatMap((item) => {
+      const seleccionados = agregados.filter((agregado) => item.agregados.includes(agregado.id));
+      const subtotal =
+        (item.precioUnitario +
+          seleccionados.reduce((suma, agregado) => suma + agregado.precio, 0)) *
+        item.cantidad;
+      return [
+        `• ${item.cantidad}x ${nombreProducto(item.id, idioma)}${item.variante ? ` (${nombreVariante(item.variante, idioma, t)})` : ''} - ${money.format(subtotal)}`,
+        ...seleccionados.map(
+          (agregado) =>
+            `   + ${agregado.nombre[idioma] ?? agregado.nombre.es} ${money.format(agregado.precio)}`,
+        ),
+      ];
+    });
     const mensaje = [
       t('pedido.saludo'),
       ' ',
@@ -67,7 +185,7 @@ export default function PedidoPanel({ onClose }) {
       {!items.length ? (
         <p>{t('pedido.vacio')}</p>
       ) : (
-        <ul>
+        <ul className="order-lines">
           {items.map((item) => {
             const nombre = nombreProducto(item.id, idioma);
             return (
@@ -101,6 +219,11 @@ export default function PedidoPanel({ onClose }) {
                     ×
                   </button>
                 </div>
+                <AgregadosLinea item={item} />
+                <DesglosePrecio item={item} />
+                <button className="duplicate-line" onClick={() => duplicarLinea(item.key)}>
+                  {t('pedido.duplicar')}
+                </button>
               </li>
             );
           })}

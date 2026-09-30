@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   categorias,
   encabezadosJugos,
-  extras,
+  agregados,
   notaBatidos,
   prefijos,
   productos,
@@ -185,47 +185,14 @@ function ProductRow({ item, categoria, onAnnounce, baseSeleccionada = 0 }) {
   );
 }
 
-function FeaturedProducts({ products, categoria, onAnnounce }) {
-  const { idioma, t } = useIdioma();
-  if (!products.length) return null;
-  return (
-    <div className="featured-products">
-      {products.slice(0, 3).map((item) => {
-        const nombre = nombreVisible(item, idioma);
-        return (
-          <article className="featured-card" key={item.id}>
-            <div className="featured-card__photo">
-              {item.foto ? <img src={item.foto} alt="" /> : <span aria-hidden="true">🍕</span>}
-            </div>
-            <div className="featured-card__body">
-              <div>
-                <h3>{nombre}</h3>
-                <strong>
-                  {categoria === 'pizzas' && `${t('menu.desde')} `}
-                  {money.format(categoria === 'pizzas' ? 5990 : item.precio)}
-                </strong>
-              </div>
-              <ProductAction
-                item={item}
-                categoria={categoria}
-                nombre={nombreProducto(item.id, idioma)}
-                onAnnounce={onAnnounce}
-              />
-            </div>
-          </article>
-        );
-      })}
-    </div>
-  );
-}
-
 function Extras({ idioma, t }) {
   return (
     <details className="menu-extras">
       <summary>{t('menu.extrasTitulo')}</summary>
-      {extras.map((extra) => (
-        <p key={extra.precio}>
-          <strong>+{money.format(extra.precio)}</strong> — {extra.texto[idioma] ?? extra.texto.es}
+      {agregados.map((agregado) => (
+        <p key={agregado.id}>
+          <strong>+{money.format(agregado.precio)}</strong> —{' '}
+          {agregado.nombre[idioma] ?? agregado.nombre.es}
         </p>
       ))}
     </details>
@@ -241,8 +208,6 @@ function CategoryContent({
   onBaseChange,
 }) {
   const { idioma, t } = useIdioma();
-  const destacados = list.filter((item) => item.destacado);
-  const regulares = list.filter((item) => !item.destacado);
   const contexto = contextoCategorias[categoria.id];
 
   return (
@@ -271,9 +236,8 @@ function CategoryContent({
           </div>
         </div>
       )}
-      <FeaturedProducts products={destacados} categoria={categoria.id} onAnnounce={onAnnounce} />
       <div className="menu-list">
-        {regulares.map((item) => (
+        {list.map((item) => (
           <ProductRow
             key={item.id}
             item={item}

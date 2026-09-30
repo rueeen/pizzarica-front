@@ -38,8 +38,6 @@ const pizza = (id, nombre, precio, es, ay, en, pt) => ({
   nombre,
   precio,
   ingredientes: { es, ay, en, pt },
-  destacado: ['piubella', 'napolitana', 'grill'].includes(id),
-  foto: null, // TODO: agregar foto real en public/fotos/.
 });
 export const pizzas = [
   pizza(
@@ -344,11 +342,7 @@ export const batidos = bats.map(([id, nombre, emoji, base, en, pt]) =>
     `${base} · Proteína (munata sabor) · Leche`,
     `${en} · Protein (your choice of flavor) · Milk`,
     `${pt} · Proteína (sabor à escolha) · Leite`,
-    {
-      emoji,
-      destacado: id === 'power-mani',
-      foto: null, // TODO: agregar foto real en public/fotos/.
-    },
+    { emoji },
   ),
 );
 export const notaBatidos = {
@@ -391,35 +385,65 @@ export const jugos = jug.map((x, i) => ({
   nombre: { es: x[0], ay: x[1], en: x[2], pt: x[3] },
   precios: x.slice(4),
 }));
-export const extras = [
+export const agregados = [
+  { id: 'choclo', precio: 800, nombre: { es: 'Choclo', ay: 'Tunqu', en: 'Corn', pt: 'Milho' } },
   {
+    id: 'cebolla',
     precio: 800,
-    texto: {
-      es: 'Choclo, cebolla, morrón, albahaca, aceituna o piña.',
-      ay: 'Tunqu · Siwulla · Pimentón · Asituna · Tomate · Achupaya',
-      en: 'Corn, onion, bell pepper, basil, olives or pineapple.',
-      pt: 'Milho, cebola, pimentão, azeitonas, tomate ou abacaxi.',
-    },
+    nombre: { es: 'Cebolla', ay: 'Siwulla', en: 'Onion', pt: 'Cebola' },
   },
   {
+    id: 'morron',
+    precio: 800,
+    nombre: { es: 'Morrón', ay: 'Pimentón', en: 'Bell pepper', pt: 'Pimentão' },
+  },
+  {
+    id: 'albahaca',
+    precio: 800,
+    nombre: { es: 'Albahaca', ay: 'Albahaca', en: 'Basil', pt: 'Manjericão' },
+  },
+  {
+    id: 'aceituna',
+    precio: 800,
+    nombre: { es: 'Aceituna', ay: 'Asituna', en: 'Olives', pt: 'Azeitonas' },
+  },
+  {
+    id: 'pina',
+    precio: 800,
+    nombre: { es: 'Piña', ay: 'Achupaya', en: 'Pineapple', pt: 'Abacaxi' },
+  },
+  { id: 'jamon', precio: 1000, nombre: { es: 'Jamón', ay: 'Jamón', en: 'Ham', pt: 'Presunto' } },
+  { id: 'tocino', precio: 1000, nombre: { es: 'Tocino', ay: 'Tocino', en: 'Bacon', pt: 'Bacon' } },
+  {
+    id: 'chorizo',
     precio: 1000,
-    texto: {
-      es: 'Jamón, tocino, chorizo, salame o pepperoni.',
-      ay: 'Jamón · Tocino · Aycha jipilla · Salame · Pepperoni',
-      en: 'Ham, bacon, sausage, salami or pepperoni.',
-      pt: 'Presunto, bacon, chorizo, salame ou pepperoni.',
-    },
+    nombre: { es: 'Chorizo', ay: 'Aycha jipilla', en: 'Sausage', pt: 'Chorizo' },
   },
   {
-    precio: 1200,
-    texto: {
-      es: 'Palta, queso, pollo, carne y atún.',
-      ay: 'Palta · Kisu · aycha wallpa · aycha waka · Atún',
-      en: 'Avocado, cheese, chicken, beef or tuna.',
-      pt: 'Abacate, queijo, frango, carne bovina ou atum.',
-    },
+    id: 'salame',
+    precio: 1000,
+    nombre: { es: 'Salame', ay: 'Salame', en: 'Salami', pt: 'Salame' },
   },
+  {
+    id: 'pepperoni',
+    precio: 1000,
+    nombre: { es: 'Pepperoni', ay: 'Pepperoni', en: 'Pepperoni', pt: 'Pepperoni' },
+  },
+  { id: 'palta', precio: 1200, nombre: { es: 'Palta', ay: 'Palta', en: 'Avocado', pt: 'Abacate' } },
+  { id: 'queso', precio: 1200, nombre: { es: 'Queso', ay: 'Kisu', en: 'Cheese', pt: 'Queijo' } },
+  {
+    id: 'pollo',
+    precio: 1200,
+    nombre: { es: 'Pollo', ay: 'Aycha wallpa', en: 'Chicken', pt: 'Frango' },
+  },
+  {
+    id: 'carne',
+    precio: 1200,
+    nombre: { es: 'Carne', ay: 'Aycha waka', en: 'Beef', pt: 'Carne bovina' },
+  },
+  { id: 'atun', precio: 1200, nombre: { es: 'Atún', ay: 'Atún', en: 'Tuna', pt: 'Atum' } },
 ];
+export const categoriasConAgregados = ['pizzas', 'conos'];
 export const tamanos = [
   {
     nombre: 'Individual 25 × 25 cm',
