@@ -13,6 +13,25 @@
   inset-block: 0;
   transition: transform 450ms var(--ease-salida);
 }
+.hero__pizza {
+  position: absolute;
+  z-index: 1;
+  right: max(24px, calc((100vw - var(--ancho)) / 2));
+  bottom: -72px;
+  width: min(38%, 420px);
+  height: auto;
+  opacity: 0;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.25));
+  transform: translateY(24px) rotate(-14deg);
+  transition:
+    opacity 400ms var(--ease-salida) 1000ms,
+    transform 400ms var(--ease-salida) 1000ms;
+  pointer-events: none;
+}
+.is-ready .hero__pizza {
+  opacity: 1;
+  transform: rotate(-8deg);
+}
 .hero__yellow {
   left: 0;
   width: 34%;
@@ -31,6 +50,7 @@
 }
 .hero__inner {
   position: relative;
+  z-index: 2;
   min-height: 610px;
   display: grid;
   grid-template-columns: 48% 52%;
@@ -115,6 +135,11 @@
 .is-ready .hero__actions {
   opacity: 1;
   transform: none;
+}
+@media (max-width: 899px) {
+  .hero__pizza {
+    display: none;
+  }
 }
 @media (max-width: 767px) {
   .hero {

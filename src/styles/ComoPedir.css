@@ -16,23 +16,20 @@
   position: relative;
   margin: 45px 0;
 }
-.steps svg {
+.steps__line {
   position: absolute;
   left: 16.6%;
   top: 29px;
   width: 66.6%;
   height: 3px;
+  z-index: 0;
+  background: var(--coral);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 900ms linear;
 }
-.steps path {
-  stroke: var(--coral);
-  stroke-width: 3;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  transition: stroke-dashoffset 900ms linear;
-  vector-effect: non-scaling-stroke;
-}
-.is-visible .steps path {
-  stroke-dashoffset: 0;
+.is-visible .steps__line {
+  transform: scaleX(1);
 }
 .step {
   text-align: center;
@@ -43,6 +40,9 @@
   place-items: center;
   width: 58px;
   height: 58px;
+  position: relative;
+  z-index: 1;
+  flex: none;
   margin: auto;
   background: var(--coral-texto);
   color: #fff;
@@ -67,21 +67,25 @@
 .is-visible .step p {
   opacity: 1;
 }
-@media (max-width: 600px) {
+@media (max-width: 900px) {
   .order__panel {
-    border-radius: 36px;
-    padding: 40px 24px;
+    padding: 48px 32px;
   }
   .steps {
     grid-template-columns: 1fr;
     gap: 30px;
   }
-  .steps svg {
-    transform: rotate(90deg);
-    width: 230px;
-    height: 3px;
-    left: calc(50% - 115px);
-    top: 145px;
+  .steps__line {
+    right: auto;
+    bottom: 29px;
+    left: 27.5px;
+    width: 3px;
+    height: auto;
+    transform: scaleY(0);
+    transform-origin: top center;
+  }
+  .is-visible .steps__line {
+    transform: scaleY(1);
   }
   .step {
     display: grid;
@@ -92,5 +96,21 @@
   }
   .step span {
     margin: 0;
+  }
+  .order .button--whatsapp {
+    width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .order__panel {
+    border-radius: 36px;
+    padding: 40px 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .steps__line,
+  .is-visible .steps__line {
+    transform: none;
+    transition: none;
   }
 }

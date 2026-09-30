@@ -56,6 +56,15 @@
 .category-heading small {
   color: #5a5a5a;
 }
+.menu-pizza-banner {
+  display: block;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  margin-bottom: 32px;
+  border-radius: 20px;
+  object-fit: cover;
+  object-position: center;
+}
 .menu-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

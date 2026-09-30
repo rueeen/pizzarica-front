@@ -2,6 +2,8 @@ export const site = {
   nombre: 'PizzArica',
   // Reactivar cuando el food truck tenga una dirección fija confirmada.
   mostrarUbicacion: false,
+  // Reactivar cuando haya al menos tres fotos reales configuradas.
+  mostrarGaleria: false,
   whatsapp: '56900000000', // TODO: dato real
   mensajeWhatsapp: 'Hola PizzArica, quiero hacer un pedido',
   instagram: 'pizzarica', // TODO: dato real
@@ -28,7 +30,7 @@ export const site = {
     { dia: 5, abre: '18:30', cierra: '00:30' },
     { dia: 6, abre: '18:30', cierra: '00:30' }, // TODO: horarios reales
   ],
-  galeria: [null, null, null, null], // TODO: reemplazar con rutas y textos alternativos reales
+  galeria: [],
 };
 export const whatsappUrl = (mensaje = site.mensajeWhatsapp) =>
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(mensaje)}`;

@@ -43,7 +43,7 @@ export default function Landing() {
         <Menu />
         <LugaresArica />
         <ComoPedir />
-        <Galeria site={site} />
+        {site.mostrarGaleria && <Galeria site={site} />}
       </main>
       <Footer site={site} />
       <BotonWhatsApp />
