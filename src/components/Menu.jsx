@@ -218,23 +218,25 @@ function CategoryContent({
 
   return (
     <div className="category-content" aria-labelledby={labelledBy}>
-      <header className="category-heading">
-        <h3>{categoria.nombre[idioma] ?? categoria.nombre.es}</h3>
-        {contexto && <p>{contexto[idioma] ?? contexto.es}</p>}
-        {categoria.id === 'batidos' && <small>{t('menu.sabores')}</small>}
+      <header className="category-header">
+        <div className="category-heading">
+          <h3>{categoria.nombre[idioma] ?? categoria.nombre.es}</h3>
+          {contexto && <p>{contexto[idioma] ?? contexto.es}</p>}
+          {categoria.id === 'batidos' && <small>{t('menu.sabores')}</small>}
+        </div>
+        {categoria.id === 'pizzas' && mostrarImagen && (
+          <img
+            className="category-header__photo"
+            src={ibiza480}
+            srcSet={`${ibiza480} 480w, ${ibiza960} 960w, ${ibiza1440} 1440w`}
+            sizes="(max-width: 700px) 92px, 140px"
+            width="140"
+            height="140"
+            loading="lazy"
+            alt={t('menu.pizzaFotoAlt')}
+          />
+        )}
       </header>
-      {categoria.id === 'pizzas' && mostrarImagen && (
-        <img
-          className="menu-pizza-banner"
-          src={ibiza960}
-          srcSet={`${ibiza480} 480w, ${ibiza960} 960w, ${ibiza1440} 1440w`}
-          sizes="(max-width: 1023px) calc(100vw - 48px), 816px"
-          width="1440"
-          height="1080"
-          loading="lazy"
-          alt={t('menu.pizzaFotoAlt')}
-        />
-      )}
       {categoria.id === 'jugos' && (
         <div className="juice-bases">
           <strong>{t('menu.base')}</strong>
