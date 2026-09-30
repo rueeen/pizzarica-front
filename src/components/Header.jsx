@@ -1,7 +1,72 @@
 import { useEffect, useState } from 'react';
 import Logo from './Logo';
 import SelectorIdioma from './SelectorIdioma';
-import { whatsappUrl } from '../data/site';
+import { site, whatsappUrl } from '../data/site';
 import { useIdioma } from '../i18n/IdiomaContext';
 import '../styles/Header.css';
-export default function Header(){const{t}=useIdioma();const[open,setOpen]=useState(false),[compact,setCompact]=useState(false);const links=[[t('nav.menu'),'#menu'],[t('nav.ubicacion'),'#ubicacion'],[t('nav.arica'),'#arica'],[t('nav.pedir'),'#como-pedir']];useEffect(()=>{const node=document.querySelector('#header-sentinel');if(!node)return;const observer=new IntersectionObserver(([e])=>setCompact(!e.isIntersecting),{rootMargin:'-80px 0px 0px'});observer.observe(node);return()=>observer.disconnect()},[]);useEffect(()=>{const close=e=>e.key==='Escape'&&setOpen(false);addEventListener('keydown',close);return()=>removeEventListener('keydown',close)},[]);return <header className={`header ${compact?'is-compact':''}`}><div className="header__inner container"><a className="header__brand" href="#inicio"><Logo/></a><button className={`nav-toggle ${open?'is-open':''}`} aria-label={t('nav.abrir')} aria-expanded={open} onClick={()=>setOpen(!open)}><span/><span/><span/></button><nav className={`nav ${open?'is-open':''}`} aria-label={t('nav.principal')}>{links.map(([label,url],i)=><a key={url} style={{'--i':i}} href={url} onClick={()=>setOpen(false)}>{label}</a>)}<div className="language-desktop"><SelectorIdioma/></div><div className="language-mobile-wrap"><SelectorIdioma mobile/></div><a className="button button--whatsapp" href={whatsappUrl()} target="_blank" rel="noopener noreferrer" onClick={()=>setOpen(false)}>{t('whatsapp.cta')}</a></nav></div></header>}
+export default function Header() {
+  const { t } = useIdioma();
+  const [open, setOpen] = useState(false),
+    [compact, setCompact] = useState(false);
+  const links = [
+    [t('nav.menu'), '#menu'],
+    ...(site.mostrarUbicacion ? [[t('nav.ubicacion'), '#ubicacion']] : []),
+    [t('nav.arica'), '#arica'],
+    [t('nav.pedir'), '#como-pedir'],
+  ];
+  useEffect(() => {
+    const node = document.querySelector('#header-sentinel');
+    if (!node) return;
+    const observer = new IntersectionObserver(([e]) => setCompact(!e.isIntersecting), {
+      rootMargin: '-80px 0px 0px',
+    });
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    const close = (e) => e.key === 'Escape' && setOpen(false);
+    addEventListener('keydown', close);
+    return () => removeEventListener('keydown', close);
+  }, []);
+  return (
+    <header className={`header ${compact ? 'is-compact' : ''}`}>
+      <div className="header__inner container">
+        <a className="header__brand" href="#inicio">
+          <Logo />
+        </a>
+        <button
+          className={`nav-toggle ${open ? 'is-open' : ''}`}
+          aria-label={t('nav.abrir')}
+          aria-expanded={open}
+          onClick={() => setOpen(!open)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+        <nav className={`nav ${open ? 'is-open' : ''}`} aria-label={t('nav.principal')}>
+          {links.map(([label, url], i) => (
+            <a key={url} style={{ '--i': i }} href={url} onClick={() => setOpen(false)}>
+              {label}
+            </a>
+          ))}
+          <div className="language-desktop">
+            <SelectorIdioma />
+          </div>
+          <div className="language-mobile-wrap">
+            <SelectorIdioma mobile />
+          </div>
+          <a
+            className="button button--whatsapp"
+            href={whatsappUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+          >
+            {t('whatsapp.cta')}
+          </a>
+        </nav>
+      </div>
+    </header>
+  );
+}

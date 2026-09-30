@@ -3,5 +3,139 @@ import { usePedido } from '../context/PedidoContext';
 import { useIdioma } from '../i18n/IdiomaContext';
 import { nombreProducto, nombreVariante } from './Menu';
 import { site } from '../data/site';
-const money=new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0});
-export default function PedidoPanel({onClose}){const{idioma,t}=useIdioma();const{items,quitar,cambiarCantidad,vaciar,nota,setNota,total,cantidadTotal}=usePedido();const[confirmando,setConfirmando]=useState(false),[aviso,setAviso]=useState('');const timer=useRef();useEffect(()=>()=>clearTimeout(timer.current),[]);const confirmarVaciado=()=>{if(confirmando){vaciar();setConfirmando(false);return}setConfirmando(true);timer.current=setTimeout(()=>setConfirmando(false),4000)};const enviar=()=>{const lineas=items.map(item=>`• ${item.cantidad}x ${nombreProducto(item.id,idioma)}${item.variante?` (${nombreVariante(item.variante,idioma,t)})`:''} - ${money.format(item.precioUnitario*item.cantidad)}`);const mensaje=[t('pedido.saludo'),' ',...lineas,' ',`${t('pedido.total')}: ${money.format(total)}`,nota?`${t('pedido.comentario')}: ${nota}`:null].filter(linea=>linea!==null).map(linea=>linea===' '?'':linea).join('\n');const url=`https://wa.me/${site.whatsapp}?text=${encodeURIComponent(mensaje)}`;if(url.length>2000){setAviso(t('pedido.urlLarga'));return}setAviso('');window.open(url,'_blank','noopener')};return <div className="order-panel"><header><h3>{t('pedido.titulo')} <span className="order-count" key={cantidadTotal}>{cantidadTotal}</span></h3>{onClose&&<button className="order-close" onClick={onClose} aria-label={t('pedido.cerrar')}>×</button>}</header>{!items.length?<p>{t('pedido.vacio')}</p>:<ul>{items.map(item=>{const nombre=nombreProducto(item.id,idioma);return <li key={item.key}><div><strong>{nombre}</strong>{item.variante&&<small> ({nombreVariante(item.variante,idioma,t)})</small>}</div><div className="order-line__actions"><span className="quantity"><button onClick={()=>cambiarCantidad(item.key,item.cantidad-1)} aria-label={`${t('pedido.disminuir')} ${nombre}`}>−</button><b>{item.cantidad}</b><button onClick={()=>cambiarCantidad(item.key,item.cantidad+1)} aria-label={`${t('pedido.aumentar')} ${nombre}`}>+</button></span><strong>{money.format(item.precioUnitario*item.cantidad)}</strong><button className="remove-line" onClick={()=>quitar(item.key)} aria-label={`${t('pedido.quitar')} ${nombre}`}>×</button></div></li>})}</ul>}<label>{t('pedido.comentario')}<textarea maxLength="200" value={nota} onChange={e=>setNota(e.target.value)} placeholder={t('pedido.comentarioPlaceholder')}/></label><div className="order-total"><span>{t('pedido.total')}</span><strong>{money.format(total)}</strong></div><button className="button button--whatsapp order-send" disabled={!items.length} onClick={enviar}>{t('pedido.enviar')}</button>{aviso&&<p className="order-warning" role="alert">{aviso}</p>}{items.length>0&&<button className="clear-order" onClick={confirmarVaciado}>{confirmando?t('pedido.confirmar'):t('pedido.vaciar')}</button>}</div>}
+const money = new Intl.NumberFormat('es-CL', {
+  style: 'currency',
+  currency: 'CLP',
+  maximumFractionDigits: 0,
+});
+export default function PedidoPanel({ onClose }) {
+  const { idioma, t } = useIdioma();
+  const { items, quitar, cambiarCantidad, vaciar, nota, setNota, total, cantidadTotal } =
+    usePedido();
+  const [confirmando, setConfirmando] = useState(false),
+    [aviso, setAviso] = useState('');
+  const timer = useRef();
+  useEffect(() => () => clearTimeout(timer.current), []);
+  const confirmarVaciado = () => {
+    if (confirmando) {
+      vaciar();
+      setConfirmando(false);
+      return;
+    }
+    setConfirmando(true);
+    timer.current = setTimeout(() => setConfirmando(false), 4000);
+  };
+  const enviar = () => {
+    const lineas = items.map(
+      (item) =>
+        `• ${item.cantidad}x ${nombreProducto(item.id, idioma)}${item.variante ? ` (${nombreVariante(item.variante, idioma, t)})` : ''} - ${money.format(item.precioUnitario * item.cantidad)}`,
+    );
+    const mensaje = [
+      t('pedido.saludo'),
+      ' ',
+      ...lineas,
+      ' ',
+      `${t('pedido.total')}: ${money.format(total)}`,
+      nota ? `${t('pedido.comentario')}: ${nota}` : null,
+    ]
+      .filter((linea) => linea !== null)
+      .map((linea) => (linea === ' ' ? '' : linea))
+      .join('\n');
+    const url = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(mensaje)}`;
+    if (url.length > 2000) {
+      setAviso(t('pedido.urlLarga'));
+      return;
+    }
+    setAviso('');
+    window.open(url, '_blank', 'noopener');
+  };
+  return (
+    <div className="order-panel">
+      <header>
+        <h3>
+          {t('pedido.titulo')}{' '}
+          <span className="order-count" key={cantidadTotal}>
+            {cantidadTotal}
+          </span>
+        </h3>
+        {onClose && (
+          <button className="order-close" onClick={onClose} aria-label={t('pedido.cerrar')}>
+            ×
+          </button>
+        )}
+      </header>
+      {!items.length ? (
+        <p>{t('pedido.vacio')}</p>
+      ) : (
+        <ul>
+          {items.map((item) => {
+            const nombre = nombreProducto(item.id, idioma);
+            return (
+              <li key={item.key}>
+                <div>
+                  <strong>{nombre}</strong>
+                  {item.variante && <small> ({nombreVariante(item.variante, idioma, t)})</small>}
+                </div>
+                <div className="order-line__actions">
+                  <span className="quantity">
+                    <button
+                      onClick={() => cambiarCantidad(item.key, item.cantidad - 1)}
+                      aria-label={`${t('pedido.disminuir')} ${nombre}`}
+                    >
+                      −
+                    </button>
+                    <b>{item.cantidad}</b>
+                    <button
+                      onClick={() => cambiarCantidad(item.key, item.cantidad + 1)}
+                      aria-label={`${t('pedido.aumentar')} ${nombre}`}
+                    >
+                      +
+                    </button>
+                  </span>
+                  <strong>{money.format(item.precioUnitario * item.cantidad)}</strong>
+                  <button
+                    className="remove-line"
+                    onClick={() => quitar(item.key)}
+                    aria-label={`${t('pedido.quitar')} ${nombre}`}
+                  >
+                    ×
+                  </button>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      <label>
+        {t('pedido.comentario')}
+        <textarea
+          maxLength="200"
+          value={nota}
+          onChange={(e) => setNota(e.target.value)}
+          placeholder={t('pedido.comentarioPlaceholder')}
+        />
+      </label>
+      <div className="order-total">
+        <span>{t('pedido.total')}</span>
+        <strong>{money.format(total)}</strong>
+      </div>
+      <button
+        className="button button--whatsapp order-send"
+        disabled={!items.length}
+        onClick={enviar}
+      >
+        {t('pedido.enviar')}
+      </button>
+      {aviso && (
+        <p className="order-warning" role="alert">
+          {aviso}
+        </p>
+      )}
+      {items.length > 0 && (
+        <button className="clear-order" onClick={confirmarVaciado}>
+          {confirmando ? t('pedido.confirmar') : t('pedido.vaciar')}
+        </button>
+      )}
+    </div>
+  );
+}

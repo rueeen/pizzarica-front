@@ -1,5 +1,7 @@
 export const site = {
   nombre: 'PizzArica',
+  // Reactivar cuando el food truck tenga una dirección fija confirmada.
+  mostrarUbicacion: false,
   whatsapp: '56900000000', // TODO: dato real
   mensajeWhatsapp: 'Hola PizzArica, quiero hacer un pedido',
   instagram: 'pizzarica', // TODO: dato real
@@ -12,15 +14,22 @@ export const site = {
     titulo: 'Sitio en mantención',
     mensaje: 'Pronto, más noticias.',
   },
-  hero: { tituloLinea1: 'Pizza al paso,', tituloLinea2: 'hecha en Arica', apoyo: 'Ingredientes frescos y sabor local, preparados al momento en nuestro food truck.' }, // TODO: texto definitivo
+  hero: {
+    tituloLinea1: 'Pizza al paso,',
+    tituloLinea2: 'hecha en Arica',
+    apoyo: 'Ingredientes frescos y sabor local, preparados al momento en nuestro food truck.',
+  }, // TODO: texto definitivo
   horarios: [
-    { dia: 0, abre: null, cierra: null }, { dia: 1, abre: null, cierra: null },
-    { dia: 2, abre: '18:30', cierra: '23:30' }, { dia: 3, abre: '18:30', cierra: '23:30' },
-    { dia: 4, abre: '18:30', cierra: '23:30' }, { dia: 5, abre: '18:30', cierra: '00:30' },
+    { dia: 0, abre: null, cierra: null },
+    { dia: 1, abre: null, cierra: null },
+    { dia: 2, abre: '18:30', cierra: '23:30' },
+    { dia: 3, abre: '18:30', cierra: '23:30' },
+    { dia: 4, abre: '18:30', cierra: '23:30' },
+    { dia: 5, abre: '18:30', cierra: '00:30' },
     { dia: 6, abre: '18:30', cierra: '00:30' }, // TODO: horarios reales
   ],
-  pasos: ['Elige tu pizza en el menú.', 'Escríbenos por WhatsApp.', 'Retira en el truck.'],
   galeria: [null, null, null, null], // TODO: reemplazar con rutas y textos alternativos reales
 };
-export const whatsappUrl = (mensaje = site.mensajeWhatsapp) => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(mensaje)}`;
-export const dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+export const whatsappUrl = (mensaje = site.mensajeWhatsapp) =>
+  `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(mensaje)}`;
+export const dias = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
