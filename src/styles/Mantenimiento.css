@@ -49,9 +49,10 @@
 
 .maintenance__signature {
   margin: 8px 0 0;
-  font-family: Geosans, Poppins, sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 300;
-  letter-spacing: 0.35em;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
 }
 
 .maintenance__copy {

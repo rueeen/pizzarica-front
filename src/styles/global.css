@@ -1,10 +1,3 @@
-/* TODO: agregar public/fonts/GeosansLight.woff2 cuando esté disponible. */
-@font-face {
-  font-family: Geosans;
-  src: url('/fonts/GeosansLight.woff2') format('woff2');
-  font-display: swap;
-  font-weight: 300;
-}
 * {
   box-sizing: border-box;
 }
