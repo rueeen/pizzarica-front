@@ -154,6 +154,7 @@ function ProductRow({ item, categoria, onAnnounce, baseSeleccionada = 0 }) {
     categoria === 'jugos' ||
     categoria === 'empanadas' ||
     (categoria === 'pizzas' && item.precio !== 12990);
+  const precioPizzaMenorAlBase = categoria === 'pizzas' && item.precio < 12990;
   const soloAgua =
     categoria === 'jugos' && item.precios.slice(1).every((precio) => precio === null);
   const disabled = soloAgua && baseSeleccionada !== 0;
@@ -171,10 +172,18 @@ function ProductRow({ item, categoria, onAnnounce, baseSeleccionada = 0 }) {
         {item.ingredientes && <p>{item.ingredientes[idioma] ?? item.ingredientes.es}</p>}
         {soloAgua && <small className="water-only">{t('menu.soloAgua')}</small>}
         {mostrarPrecio && (
-          <strong className={categoria === 'pizzas' ? 'menu-item__price--special' : ''}>
+          <strong
+            className={
+              categoria === 'pizzas'
+                ? `menu-item__price--special ${precioPizzaMenorAlBase ? 'is-lower' : ''}`
+                : ''
+            }
+          >
             {categoria === 'jugos'
               ? item.precios[baseSeleccionada] && money.format(item.precios[baseSeleccionada])
-              : money.format(item.precio)}
+              : categoria === 'pizzas'
+                ? `${t('pedido.familiar').split(' ')[0]} ${money.format(item.precio)}`
+                : money.format(item.precio)}
           </strong>
         )}
       </div>
@@ -369,6 +378,11 @@ export default function Menu() {
                   }}
                 />
               </div>
+              {contextoCategorias[categoria.id] && (
+                <p className="tabs-sticky__price-context">
+                  {contextoCategorias[categoria.id][idioma] ?? contextoCategorias[categoria.id].es}
+                </p>
+              )}
             </div>
             {termino ? (
               <div className="search-results" aria-live="polite">
