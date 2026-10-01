@@ -29,11 +29,10 @@ const contextoCategorias = {
     en: 'Family 38 × 38 cm $12.990 · Individual 25 × 25 cm $5.990',
     pt: 'Família 38 × 38 cm $12.990 · Individual 25 × 25 cm $5.990',
   },
-  conos: { es: 'Todos $3.000', en: 'All $3,000', pt: 'Todos $3.000' },
   batidos: {
-    es: 'Todos $4.990, 16 oz',
-    en: 'All $4,990, 16 oz',
-    pt: 'Todos $4.990, 16 oz',
+    es: '16 oz',
+    en: '16 oz',
+    pt: '16 oz',
   },
 };
 
@@ -150,11 +149,6 @@ function ProductRow({ item, categoria, onAnnounce, baseSeleccionada = 0 }) {
   const nombre = nombreVisible(item, idioma);
   const nombreCompleto = nombreProducto(item.id, idioma);
   const seleccionado = items.some((linea) => linea.id === item.id);
-  const mostrarPrecio =
-    categoria === 'jugos' ||
-    categoria === 'empanadas' ||
-    (categoria === 'pizzas' && item.precio !== 12990);
-  const precioPizzaMenorAlBase = categoria === 'pizzas' && item.precio < 12990;
   const soloAgua =
     categoria === 'jugos' && item.precios.slice(1).every((precio) => precio === null);
   const disabled = soloAgua && baseSeleccionada !== 0;
@@ -171,22 +165,12 @@ function ProductRow({ item, categoria, onAnnounce, baseSeleccionada = 0 }) {
         <h3>{nombre}</h3>
         {item.ingredientes && <p>{item.ingredientes[idioma] ?? item.ingredientes.es}</p>}
         {soloAgua && <small className="water-only">{t('menu.soloAgua')}</small>}
-        {mostrarPrecio && (
-          <strong
-            className={
-              categoria === 'pizzas'
-                ? `menu-item__price--special ${precioPizzaMenorAlBase ? 'is-lower' : ''}`
-                : ''
-            }
-          >
-            {categoria === 'jugos'
-              ? item.precios[baseSeleccionada] && money.format(item.precios[baseSeleccionada])
-              : categoria === 'pizzas'
-                ? `${t('pedido.familiar').split(' ')[0]} ${money.format(item.precio)}`
-                : money.format(item.precio)}
-          </strong>
-        )}
       </div>
+      <strong className="menu-item__price">
+        {categoria === 'jugos'
+          ? item.precios[baseSeleccionada] && money.format(item.precios[baseSeleccionada])
+          : money.format(item.precio)}
+      </strong>
       <ProductAction
         item={item}
         categoria={categoria}
