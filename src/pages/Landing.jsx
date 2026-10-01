@@ -19,6 +19,7 @@ export default function Landing() {
     areaServed: 'Arica, Chile',
     servesCuisine: 'Pizza',
     telephone: `+${site.whatsapp}`,
+    sameAs: [`https://www.instagram.com/${site.instagram}`],
     url: typeof location === 'undefined' ? undefined : location.href,
   };
   if (site.mostrarUbicacion) {

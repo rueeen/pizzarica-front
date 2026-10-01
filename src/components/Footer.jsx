@@ -12,7 +12,7 @@ export default function Footer({ site }) {
         <div>
           <h2>Conversemos</h2>
           <a
-            href={`https://instagram.com/${site.instagram}`}
+            href={`https://www.instagram.com/${site.instagram}`}
             target="_blank"
             rel="noopener noreferrer"
           >
