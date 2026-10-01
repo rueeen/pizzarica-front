@@ -1,0 +1,167 @@
+import { useEffect, useRef, useState } from 'react';
+import { lugares } from '../data/lugares';
+import { useIdioma } from '../i18n/IdiomaContext';
+import '../styles/LugaresArica.css';
+const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+export default function LugaresArica() {
+  const { idioma, t } = useIdioma();
+  const [activo, setActivo] = useState(lugares[0].id),
+    [visible, setVisible] = useState(0),
+    [edges, setEdges] = useState({ start: true, end: false });
+  const track = useRef(),
+    cards = useRef([]),
+    panel = useRef();
+  const seleccionado = lugares.find((x) => x.id === activo);
+  const idiomaMapa = idioma === 'ay' ? 'es' : idioma;
+  useEffect(() => {
+    const root = track.current;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const best = entries
+          .filter((x) => x.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (best) setVisible(Number(best.target.dataset.index));
+      },
+      { root, threshold: 0.6 },
+    );
+    cards.current.forEach((card) => card && observer.observe(card));
+    return () => observer.disconnect();
+  }, []);
+  const updateEdges = () => {
+    const node = track.current;
+    setEdges({
+      start: node.scrollLeft < 2,
+      end: node.scrollLeft + node.clientWidth >= node.scrollWidth - 2,
+    });
+  };
+  useEffect(() => {
+    updateEdges();
+    addEventListener('resize', updateEdges);
+    return () => removeEventListener('resize', updateEdges);
+  }, []);
+  const go = (i) =>
+    cards.current[Math.max(0, Math.min(lugares.length - 1, i))]?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'start',
+    });
+  const move = (direction) =>
+    track.current.scrollBy({
+      left: direction * (cards.current[0]?.getBoundingClientRect().width + 24 || 300),
+      behavior: 'smooth',
+    });
+  const select = (lugar) => {
+    setActivo(lugar.id);
+    if (matchMedia('(max-width: 639px)').matches)
+      requestAnimationFrame(() => panel.current?.scrollIntoView({ block: 'nearest' }));
+  };
+  const links = (lugar) => ({
+    dir: `https://www.google.com/maps/dir/?api=1&destination=${lugar.lat},${lugar.lng}&destination_place_id=${lugar.placeId}`,
+    ver: `https://www.google.com/maps/search/?api=1&query=${lugar.lat},${lugar.lng}&query_place_id=${lugar.placeId}`,
+  });
+  const selectedLinks = links(seleccionado);
+  return (
+    <section id="arica" className="section arica" aria-labelledby="arica-title">
+      <div className="container">
+        <h2 id="arica-title">{t('arica.titulo')}</h2>
+        <p className="arica__intro">{t('arica.intro')}</p>
+        <div className="places-slider">
+          <button
+            className="slider-arrow slider-arrow--prev"
+            disabled={edges.start}
+            onClick={() => move(-1)}
+            aria-label={t('arica.anterior')}
+          >
+            ‹
+          </button>
+          <div
+            ref={track}
+            className="places-track"
+            tabIndex="0"
+            role="region"
+            aria-label={t('arica.carrusel')}
+            onScroll={updateEdges}
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                move(-1);
+              }
+              if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                move(1);
+              }
+            }}
+          >
+            {lugares.map((lugar, i) => {
+              const ubicable = lugar.lat != null;
+              return (
+                <article
+                  ref={(el) => (cards.current[i] = el)}
+                  data-index={i}
+                  tabIndex="0"
+                  className={`place-card ${activo === lugar.id ? 'is-active' : ''} ${!ubicable ? 'place-card--full' : ''}`}
+                  key={lugar.id}
+                >
+                  <h3>{lugar.nombre}</h3>
+                  <p>{lugar.descripcion[idioma]}</p>
+                  {ubicable && (
+                    <button aria-pressed={activo === lugar.id} onClick={() => select(lugar)}>
+                      {t('arica.seleccionar')}
+                    </button>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+          <button
+            className="slider-arrow slider-arrow--next"
+            disabled={edges.end}
+            onClick={() => move(1)}
+            aria-label={t('arica.siguiente')}
+          >
+            ›
+          </button>
+        </div>
+        <div className="slider-dots" aria-label={t('arica.paginas')}>
+          {lugares.map((lugar, i) => (
+            <button
+              key={lugar.id}
+              className={visible === i ? 'is-active' : ''}
+              aria-label={`${t('arica.irA')} ${i + 1}`}
+              aria-current={visible === i ? 'true' : undefined}
+              onClick={() => go(i)}
+            />
+          ))}
+        </div>
+        <div ref={panel} className="arica-detail" key={seleccionado.id}>
+          {apiKey && seleccionado.placeId ? (
+            <div className="arica-map">
+              <iframe
+                src={`https://www.google.com/maps/embed/v1/place?key=${encodeURIComponent(apiKey)}&q=place_id:${seleccionado.placeId}&language=${idiomaMapa}&zoom=14`}
+                title={`${t('arica.mapaTitulo')} ${seleccionado.nombre}`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                allowFullScreen
+              />
+              <small>{t('arica.atribucion')}</small>
+            </div>
+          ) : (
+            <div className="arica-map arica-map--placeholder" aria-hidden="true" />
+          )}
+          <div className="arica-detail__text">
+            <h3>{seleccionado.nombre}</h3>
+            <p>{seleccionado.descripcion[idioma]}</p>
+            <div>
+              <a href={selectedLinks.dir} target="_blank" rel="noopener noreferrer">
+                {t('arica.llegar')}
+              </a>
+              <a href={selectedLinks.ver} target="_blank" rel="noopener noreferrer">
+                {t('arica.verMapa')}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

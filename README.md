@@ -58,3 +58,25 @@ Los resultados se guardan en `src/assets/` y `public/favicon.png`. Esas salidas
 binarias están ignoradas por Git para que la entrega siga siendo compatible con
 canales que solo admiten cambios de texto. Mientras no se generen, la aplicación
 usa directamente el PNG original y el favicon vectorial incluido en `public/`.
+
+## Rama de pruebas
+
+La rama `landing-test` se compila y publica automáticamente en GitHub Pages con
+GitHub Actions cada vez que se hace `push`. La vista de revisión queda disponible
+en <https://rueeen.github.io/pizzarica-front/>.
+
+En **Settings → Pages** del repositorio, **Source** debe estar configurado como
+**GitHub Actions**. El workflow fuerza `VITE_MANTENIMIENTO=false`, por lo que esta
+vista de prueba no muestra la pantalla de mantenimiento usada en producción.
+
+### Mapa de lugares de Arica
+
+El mapa incrustado es opcional. Para habilitarlo, crea el secreto del repositorio
+`VITE_GOOGLE_MAPS_API_KEY`. La clave de Google Cloud debe:
+
+- estar limitada exclusivamente a la **Maps Embed API**;
+- restringirse por referente HTTP a `rueeen.github.io/*`; y
+- incluir también el dominio final del sitio entre sus referentes permitidos.
+
+Sin la clave, la sección turística sigue disponible y conserva sus enlaces a
+Google Maps, pero omite silenciosamente el mapa incrustado.
