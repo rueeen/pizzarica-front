@@ -4,9 +4,9 @@ export const site = {
   mostrarUbicacion: false,
   // Reactivar cuando haya al menos tres fotos reales configuradas.
   mostrarGaleria: false,
-  whatsapp: '56900000000', // TODO: dato real
+  whatsapp: '56951743204',
   mensajeWhatsapp: 'Hola PizzArica, quiero hacer un pedido',
-  instagram: 'pizzarica', // TODO: dato real
+  instagram: 'pizza.arica',
   direccion: 'Dirección por confirmar, Arica', // TODO: dato real
   referencia: 'Frente a un punto de referencia por confirmar', // TODO: dato real
   mapaEmbedUrl: '', // TODO: URL embed de Google Maps

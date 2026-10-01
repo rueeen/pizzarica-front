@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePedido } from '../context/PedidoContext';
 import { useIdioma } from '../i18n/IdiomaContext';
 import { nombreProducto, nombreVariante } from './Menu';
-import { site } from '../data/site';
+import { whatsappUrl } from '../data/site';
 import { agregados, categoriasConAgregados, productos } from '../data/carta';
 const money = new Intl.NumberFormat('es-CL', {
   style: 'currency',
@@ -159,7 +159,7 @@ export default function PedidoPanel({ onClose }) {
       .filter((linea) => linea !== null)
       .map((linea) => (linea === ' ' ? '' : linea))
       .join('\n');
-    const url = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(mensaje)}`;
+    const url = whatsappUrl(mensaje);
     if (url.length > 2000) {
       setAviso(t('pedido.urlLarga'));
       return;
