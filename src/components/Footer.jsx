@@ -1,8 +1,8 @@
 import Logo from './Logo';
-import { whatsappUrl, dias } from '../data/site';
+import { whatsappUrl, resumenHorario } from '../data/site';
 import '../styles/Footer.css';
 export default function Footer({ site }) {
-  const open = site.horarios.filter((h) => h.abre);
+  const horarios = resumenHorario(site.horarios);
   return (
     <footer className="footer">
       <div className="container footer__grid">
@@ -24,11 +24,11 @@ export default function Footer({ site }) {
         </div>
         <div>
           <h2>Horario</h2>
-          <p>
-            {open.length
-              ? `${dias[open[0].dia]} a ${dias[open.at(-1).dia]}, desde las ${open[0].abre}`
-              : 'Horario por confirmar'}
-          </p>
+          {horarios.length ? (
+            horarios.map((horario) => <p key={horario}>{horario}</p>)
+          ) : (
+            <p>Horario por confirmar</p>
+          )}
           <p>
             © {new Date().getFullYear()} {site.nombre}
           </p>

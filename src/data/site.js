@@ -22,16 +22,41 @@ export const site = {
     apoyo: 'Ingredientes frescos y sabor local, preparados al momento en nuestro food truck.',
   }, // TODO: texto definitivo
   horarios: [
-    { dia: 0, abre: null, cierra: null },
-    { dia: 1, abre: null, cierra: null },
-    { dia: 2, abre: '18:30', cierra: '23:30' },
-    { dia: 3, abre: '18:30', cierra: '23:30' },
-    { dia: 4, abre: '18:30', cierra: '23:30' },
-    { dia: 5, abre: '18:30', cierra: '00:30' },
-    { dia: 6, abre: '18:30', cierra: '00:30' }, // TODO: horarios reales
+    { dia: 0, abre: '08:00', cierra: '23:00' },
+    { dia: 1, abre: '08:00', cierra: '23:00' },
+    { dia: 2, abre: '08:00', cierra: '23:00' },
+    { dia: 3, abre: '08:00', cierra: '23:00' },
+    { dia: 4, abre: '08:00', cierra: '23:00' },
+    { dia: 5, abre: '08:00', cierra: '00:00' },
+    { dia: 6, abre: '08:00', cierra: '00:00' },
   ],
   galeria: [],
 };
 export const whatsappUrl = (mensaje = site.mensajeWhatsapp) =>
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(mensaje)}`;
 export const dias = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+
+export function resumenHorario(horarios) {
+  const grupos = [];
+  for (let dia = 0; dia < dias.length; dia++) {
+    const horario = horarios.find((h) => h.dia === dia);
+    if (!horario?.abre) continue;
+    const anterior = grupos.at(-1);
+    if (
+      anterior &&
+      anterior.fin === dia - 1 &&
+      anterior.abre === horario.abre &&
+      anterior.cierra === horario.cierra
+    ) {
+      anterior.fin = dia;
+    } else {
+      grupos.push({ inicio: dia, fin: dia, abre: horario.abre, cierra: horario.cierra });
+    }
+  }
+  return grupos.map(({ inicio, fin, abre, cierra }) => {
+    const primero = dias[inicio][0].toUpperCase() + dias[inicio].slice(1);
+    const rango =
+      inicio === fin ? primero : `${primero} ${fin === inicio + 1 ? 'y' : 'a'} ${dias[fin]}`;
+    return `${rango}: ${abre} – ${cierra}`;
+  });
+}

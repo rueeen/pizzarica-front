@@ -1,5 +1,11 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { agregados } from '../data/carta';
+import { agregados, productos } from '../data/carta';
+
+const idsProductos = new Set(
+  Object.values(productos)
+    .flat()
+    .map((item) => item.id),
+);
 
 const STORAGE_KEY = 'pizzarica_pedido';
 const PedidoContext = createContext(null);
@@ -9,7 +15,9 @@ function cargarPedido() {
     const guardado = JSON.parse(localStorage.getItem(STORAGE_KEY));
     return {
       items: Array.isArray(guardado?.items)
-        ? guardado.items.map((item) => ({ ...item, agregados: item.agregados ?? [] }))
+        ? guardado.items
+            .filter((item) => idsProductos.has(item?.id))
+            .map((item) => ({ ...item, agregados: item.agregados ?? [] }))
         : [],
       nota: typeof guardado?.nota === 'string' ? guardado.nota.slice(0, 200) : '',
     };
