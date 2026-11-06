@@ -32,12 +32,25 @@ export function getEstado(now, horarios, tz) {
     mins(prev.cierra) <= mins(prev.abre) &&
     current < mins(prev.cierra)
   )
-    return { open: true, text: `Abierto hasta las ${prev.cierra}` };
+    return {
+      open: true,
+      text:
+        prev.cierra === '00:00'
+          ? 'Abierto hasta la medianoche'
+          : `Abierto hasta las ${prev.cierra}`,
+    };
   if (today?.abre) {
     const a = mins(today.abre),
       c = mins(today.cierra),
       open = current >= a && (c > a ? current < c : true);
-    if (open) return { open: true, text: `Abierto hasta las ${today.cierra}` };
+    if (open)
+      return {
+        open: true,
+        text:
+          today.cierra === '00:00'
+            ? 'Abierto hasta la medianoche'
+            : `Abierto hasta las ${today.cierra}`,
+      };
   }
   for (let add = today?.abre && current < mins(today.abre) ? 0 : 1; add < 8; add++) {
     const next = horarios.find((h) => h.dia === (day + add) % 7);
