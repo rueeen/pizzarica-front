@@ -5,6 +5,7 @@ import {
   agregados,
   notaBatidos,
   prefijos,
+  tamanos,
   productos,
 } from '../data/carta';
 import { usePedido } from '../context/PedidoContext';
@@ -25,9 +26,9 @@ const money = new Intl.NumberFormat('es-CL', {
 const bases = ['agua', 'soprole', 'gloria', 'sin-lactosa'];
 const contextoCategorias = {
   pizzas: {
-    es: 'Familiar 38 × 38 cm $12.990 · Individual 25 × 25 cm $5.990',
-    en: 'Family 38 × 38 cm $12.990 · Individual 25 × 25 cm $5.990',
-    pt: 'Família 38 × 38 cm $12.990 · Individual 25 × 25 cm $5.990',
+    es: `${tamanos[1].nombre} según carta · ${tamanos[0].nombre} ${money.format(tamanos[0].precio)}`,
+    en: 'Family 38 × 38 cm according to menu · Individual 25 × 25 cm $5.990',
+    pt: 'Família 38 × 38 cm conforme o cardápio · Individual 25 × 25 cm $5.990',
   },
   batidos: {
     es: '16 oz',
@@ -89,7 +90,7 @@ function ProductAction({ item, categoria, nombre, onAnnounce, varianteDirecta, d
           { id: 'individual', precio: 5990 },
           { id: 'familiar', precio: item.precio },
         ]
-      : categoria === 'jugos' && !varianteDirecta
+      : Array.isArray(item.precios) && !varianteDirecta
         ? item.precios.map((precio, i) => precio && { id: bases[i], precio }).filter(Boolean)
         : [];
   const lineas = items.filter((linea) => linea.id === item.id);
@@ -167,8 +168,10 @@ function ProductRow({ item, categoria, onAnnounce, baseSeleccionada = 0 }) {
         {soloAgua && <small className="water-only">{t('menu.soloAgua')}</small>}
       </div>
       <strong className="menu-item__price">
-        {categoria === 'jugos'
-          ? item.precios[baseSeleccionada] && money.format(item.precios[baseSeleccionada])
+        {Array.isArray(item.precios)
+          ? categoria === 'jugos'
+            ? item.precios[baseSeleccionada] && money.format(item.precios[baseSeleccionada])
+            : `${t('menu.desde')} ${money.format(Math.min(...item.precios.filter((precio) => precio !== null)))}`
           : money.format(item.precio)}
       </strong>
       <ProductAction
@@ -403,6 +406,7 @@ export default function Menu() {
             <PedidoPanel />
           </aside>
         </div>
+        <p className="menu-note">{t('menu.braille')}</p>
         <p className="sr-only" aria-live="polite">
           {announcement}
         </p>
