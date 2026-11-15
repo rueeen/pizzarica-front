@@ -59,6 +59,13 @@ binarias están ignoradas por Git para que la entrega siga siendo compatible con
 canales que solo admiten cambios de texto. Mientras no se generen, la aplicación
 usa directamente el PNG original y el favicon vectorial incluido en `public/`.
 
+### Tipografía Geosans (opcional)
+
+La firma «FOOD TRUCK» usa Poppins por defecto. Para usar la tipografía original
+Geosans, obtén `GeosansLight.woff2` desde los assets oficiales del manual de
+marca, colócalo en `public/fonts/` y sigue las instrucciones de
+`src/styles/geosans.css`.
+
 ## Rama de pruebas
 
 La rama `landing-test` se compila y publica automáticamente en GitHub Pages con

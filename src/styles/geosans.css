@@ -1,0 +1,12 @@
+/*
+ * Tipografía opcional: coloca GeosansLight.woff2 en public/fonts/,
+ * descomenta el bloque @font-face e importa este archivo desde global.css.
+ *
+ * @font-face {
+ *   font-family: 'Geosans';
+ *   src: url('/fonts/GeosansLight.woff2') format('woff2');
+ *   font-display: swap;
+ *   font-style: normal;
+ *   font-weight: 300;
+ * }
+ */
