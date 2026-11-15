@@ -406,7 +406,6 @@ export default function Menu() {
             <PedidoPanel />
           </aside>
         </div>
-        <p className="menu-note">{t('menu.braille')}</p>
         <p className="sr-only" aria-live="polite">
           {announcement}
         </p>
