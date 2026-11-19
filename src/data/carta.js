@@ -679,6 +679,194 @@ export const completos = [
     precio: 2500,
   },
 ];
+export const frutasBatidos = [
+  {
+    id: 'pina',
+    nombre: {
+      es: 'Piña',
+      ay: 'Achupaya',
+      en: 'Pineapple',
+      pt: 'Abacaxi',
+    },
+  },
+  {
+    id: 'melon',
+    nombre: {
+      es: 'Melón',
+      ay: 'Melón',
+      en: 'Melon',
+      pt: 'Melão',
+    },
+  },
+  {
+    id: 'sandia',
+    nombre: {
+      es: 'Sandía',
+      ay: 'Sandía',
+      en: 'Watermelon',
+      pt: 'Melancia',
+    },
+  },
+  {
+    id: 'limon',
+    nombre: {
+      es: 'Limón',
+      ay: 'Limuna',
+      en: 'Lemon',
+      pt: 'Limão',
+    },
+  },
+  {
+    id: 'guayaba',
+    nombre: {
+      es: 'Guayaba',
+      ay: 'Guayaba',
+      en: 'Guava',
+      pt: 'Goiaba',
+    },
+  },
+  {
+    id: 'mora',
+    nombre: {
+      es: 'Mora',
+      ay: 'Mora',
+      en: 'Blackberry',
+      pt: 'Amora',
+    },
+  },
+  {
+    id: 'platano',
+    nombre: {
+      es: 'Plátano',
+      ay: 'Plátano',
+      en: 'Banana',
+      pt: 'Banana',
+    },
+  },
+  {
+    id: 'naranja',
+    nombre: {
+      es: 'Naranja',
+      ay: 'Larankha',
+      en: 'Orange',
+      pt: 'Laranja',
+    },
+  },
+  {
+    id: 'guanabana',
+    nombre: {
+      es: 'Guanábana',
+      ay: 'Guanábana',
+      en: 'Soursop',
+      pt: 'Graviola',
+    },
+  },
+  {
+    id: 'frutilla',
+    nombre: {
+      es: 'Frutilla',
+      ay: 'Frutilla',
+      en: 'Strawberry',
+      pt: 'Morango',
+    },
+  },
+  {
+    id: 'mango',
+    nombre: {
+      es: 'Mango',
+      ay: 'Mango',
+      en: 'Mango',
+      pt: 'Manga',
+    },
+  },
+];
+export const salsasFrappe = [
+  {
+    id: 'manjar',
+    nombre: {
+      es: 'Manjar',
+      ay: 'Manjar',
+      en: 'Dulce de leche',
+      pt: 'Doce de leite',
+    },
+  },
+  {
+    id: 'chocolate',
+    nombre: {
+      es: 'Chocolate',
+      ay: 'Chocolate',
+      en: 'Chocolate',
+      pt: 'Chocolate',
+    },
+  },
+  {
+    id: 'frutilla',
+    nombre: {
+      es: 'Frutilla',
+      ay: 'Frutilla',
+      en: 'Strawberry',
+      pt: 'Morango',
+    },
+  },
+  {
+    id: 'caramelo',
+    nombre: {
+      es: 'Caramelo',
+      ay: 'Caramelo',
+      en: 'Caramel',
+      pt: 'Caramelo',
+    },
+  },
+];
+const opcionFruta = {
+  id: 'fruta',
+  etiqueta: {
+    es: 'Fruta',
+    ay: 'Fruta',
+    en: 'Fruit',
+    pt: 'Fruta',
+  },
+  valores: frutasBatidos,
+};
+const opcionSalsa = {
+  id: 'salsa',
+  etiqueta: {
+    es: 'Salsa',
+    ay: 'Salsa',
+    en: 'Sauce',
+    pt: 'Calda',
+  },
+  valores: salsasFrappe,
+};
+const opcionChantilly = {
+  id: 'chantilly',
+  etiqueta: {
+    es: 'Crema chantilly',
+    ay: 'Crema chantilly',
+    en: 'Whipped cream',
+    pt: 'Chantilly',
+  },
+  valores: [
+    {
+      id: 'si',
+      nombre: {
+        es: 'Con crema chantilly',
+        ay: 'Con crema chantilly',
+        en: 'With whipped cream',
+        pt: 'Com chantilly',
+      },
+    },
+    {
+      id: 'no',
+      nombre: {
+        es: 'Sin crema chantilly',
+        ay: 'Sin crema chantilly',
+        en: 'Without whipped cream',
+        pt: 'Sem chantilly',
+      },
+    },
+  ],
+};
 export const batidosClasicos = [
   {
     id: 'smoothie',
@@ -689,6 +877,13 @@ export const batidosClasicos = [
       pt: 'Smoothie',
     },
     precio: 4500,
+    ingredientes: {
+      es: 'Fruta a elección y yogurt natural. Crema chantilly opcional.',
+      ay: 'Fruta a elección y yogurt natural. Crema chantilly opcional.',
+      en: 'Fruit of your choice and natural yogurt. Optional whipped cream.',
+      pt: 'Fruta à escolha e iogurte natural. Chantilly opcional.',
+    },
+    opciones: [opcionFruta, opcionChantilly],
   },
   {
     id: 'cafe-frappe',
@@ -699,6 +894,13 @@ export const batidosClasicos = [
       pt: 'Café frappé',
     },
     precio: 4500,
+    ingredientes: {
+      es: 'Café, leche, hielo y salsa a elección. Crema chantilly opcional.',
+      ay: 'Café, leche, hielo y salsa a elección. Crema chantilly opcional.',
+      en: 'Coffee, milk, ice and sauce of your choice. Optional whipped cream.',
+      pt: 'Café, leite, gelo e calda à escolha. Chantilly opcional.',
+    },
+    opciones: [opcionSalsa, opcionChantilly],
   },
   {
     id: 'milkshake',
@@ -709,6 +911,13 @@ export const batidosClasicos = [
       pt: 'Milkshake',
     },
     precio: 4500,
+    ingredientes: {
+      es: 'Leche, fruta a elección, helado de vainilla y hielo. Crema chantilly opcional.',
+      ay: 'Leche, fruta a elección, helado de vainilla y hielo. Crema chantilly opcional.',
+      en: 'Milk, fruit of your choice, vanilla ice cream and ice. Optional whipped cream.',
+      pt: 'Leite, fruta à escolha, sorvete de baunilha e gelo. Chantilly opcional.',
+    },
+    opciones: [opcionFruta, opcionChantilly],
   },
   {
     id: 'granizado',
@@ -720,11 +929,12 @@ export const batidosClasicos = [
     },
     precio: 4000,
     ingredientes: {
-      es: 'Sabores: piña, melón, sandía, limón, guayaba, mora, plátano, naranja, guanábana, frutilla, mango.',
-      ay: 'Sabores: piña, melón, sandía, limón, guayaba, mora, plátano, naranja, guanábana, frutilla, mango.',
-      en: 'Flavors: pineapple, melon, watermelon, lemon, guava, blackberry, banana, orange, soursop, strawberry, mango.',
-      pt: 'Sabores: abacaxi, melão, melancia, limão, goiaba, amora, banana, laranja, graviola, morango, manga.',
+      es: 'Fruta a elección.',
+      ay: 'Fruta a elección.',
+      en: 'Fruit of your choice.',
+      pt: 'Fruta à escolha.',
     },
+    opciones: [opcionFruta],
   },
 ];
 export const bebidas = [

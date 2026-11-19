@@ -1,11 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { agregados, productos } from '../data/carta';
-
-const idsProductos = new Set(
-  Object.values(productos)
-    .flat()
-    .map((item) => item.id),
-);
+import { agregados } from '../data/carta';
+import { buscarProducto, claveLinea, opcionesValidas } from '../utils/opcionesPedido';
 
 const STORAGE_KEY = 'pizzarica_pedido';
 const PedidoContext = createContext(null);
@@ -16,7 +11,10 @@ function cargarPedido() {
     return {
       items: Array.isArray(guardado?.items)
         ? guardado.items
-            .filter((item) => idsProductos.has(item?.id))
+            .filter((item) => {
+              const producto = buscarProducto(item?.id);
+              return producto && opcionesValidas(producto, item.opciones);
+            })
             .map((item) => ({ ...item, agregados: item.agregados ?? [] }))
         : [],
       nota: typeof guardado?.nota === 'string' ? guardado.nota.slice(0, 200) : '',
@@ -39,7 +37,9 @@ export function PedidoProvider({ children }) {
 
   const agregar = (item) =>
     setPedido((actual) => {
-      const key = item.variante ? `${item.id}__${item.variante}` : item.id;
+      const producto = buscarProducto(item.id);
+      if (!producto || !opcionesValidas(producto, item.opciones)) return actual;
+      const key = claveLinea(item);
       const existente = actual.items.find((linea) => linea.key === key);
       const items = existente
         ? actual.items.map((linea) =>
@@ -77,7 +77,7 @@ export function PedidoProvider({ children }) {
     setPedido((actual) => {
       const original = actual.items.find((item) => item.key === key);
       if (!original) return actual;
-      const raiz = original.key.replace(/__\d+$/, '');
+      const raiz = claveLinea(original);
       const sufijos = actual.items
         .map((item) =>
           item.key.match(new RegExp(`^${raiz.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}__(\\d+)$`)),
@@ -89,7 +89,12 @@ export function PedidoProvider({ children }) {
         ...actual,
         items: [
           ...actual.items,
-          { ...original, key: `${raiz}__${siguiente}`, agregados: [...original.agregados] },
+          {
+            ...original,
+            key: `${raiz}__${siguiente}`,
+            agregados: [...original.agregados],
+            ...(original.opciones ? { opciones: { ...original.opciones } } : {}),
+          },
         ],
       };
     });
