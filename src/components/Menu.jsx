@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import {
   categorias,
   encabezadosJugos,
@@ -11,6 +11,7 @@ import {
 import { usePedido } from '../context/PedidoContext';
 import { useIdioma } from '../i18n/IdiomaContext';
 import PedidoPanel from './PedidoPanel';
+import { nombreOpciones, opcionesValidas } from '../utils/opcionesPedido';
 import '../styles/Menu.css';
 
 const imagePath = (file) => `${import.meta.env.BASE_URL}generated-images/${file}`;
@@ -84,6 +85,9 @@ function ProductAction({ item, categoria, nombre, onAnnounce, varianteDirecta, d
   const { idioma, t } = useIdioma();
   const { items, agregar, cambiarCantidad } = usePedido();
   const [abierto, setAbierto] = useState(false);
+  const [opciones, setOpciones] = useState({});
+  const selectorId = useId();
+  const tieneOpciones = Boolean(item.opciones?.length);
   const variantes =
     categoria === 'pizzas'
       ? [
@@ -99,11 +103,14 @@ function ProductAction({ item, categoria, nombre, onAnnounce, varianteDirecta, d
       id: item.id,
       variante: variante?.id,
       precioUnitario: variante?.precio ?? item.precio,
+      ...(tieneOpciones ? { opciones } : {}),
     });
     setAbierto(false);
+    setOpciones({});
     onAnnounce(`${t('pedido.agregado')} ${nombre}`);
   };
   const clickAdd = () => {
+    if (tieneOpciones) return setAbierto((value) => !value);
     if (varianteDirecta) return add(varianteDirecta);
     return variantes.length > 1 ? setAbierto((value) => !value) : add(variantes[0]);
   };
@@ -112,22 +119,59 @@ function ProductAction({ item, categoria, nombre, onAnnounce, varianteDirecta, d
     <div className="product-action">
       {lineas.map((linea) => (
         <div className="product-action__selected" key={linea.key}>
-          <small>{linea.variante && nombreVariante(linea.variante, idioma, t)}</small>
+          <small>
+            {tieneOpciones
+              ? nombreOpciones(item, linea.opciones, idioma)
+              : linea.variante && nombreVariante(linea.variante, idioma, t)}
+          </small>
           <Quantity linea={linea} nombre={nombre} onChange={cambiarCantidad} t={t} />
         </div>
       ))}
-      {(!lineas.length || variantes.length > 1) && (
+      {(!lineas.length || variantes.length > 1 || tieneOpciones) && (
         <button
           className="add-button"
           onClick={clickAdd}
           disabled={disabled}
-          aria-expanded={variantes.length > 1 ? abierto : undefined}
+          aria-expanded={variantes.length > 1 || tieneOpciones ? abierto : undefined}
           aria-label={`${t('pedido.agregar')} ${nombre}`}
         >
           {t('pedido.agregar')}
         </button>
       )}
-      {abierto && (
+      {abierto && tieneOpciones && (
+        <div className="variant-picker options-picker" aria-label={t('pedido.elegirOpciones')}>
+          {item.opciones.map((grupo) => (
+            <fieldset key={grupo.id}>
+              <legend>{grupo.etiqueta[idioma] ?? grupo.etiqueta.es}</legend>
+              <div className="options-picker__values">
+                {grupo.valores.map((valor) => (
+                  <label key={valor.id}>
+                    <input
+                      type="radio"
+                      name={`${selectorId}-${grupo.id}`}
+                      value={valor.id}
+                      checked={opciones[grupo.id] === valor.id}
+                      onChange={() =>
+                        setOpciones((actual) => ({ ...actual, [grupo.id]: valor.id }))
+                      }
+                    />
+                    <span>{valor.nombre[idioma] ?? valor.nombre.es}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+          ))}
+          <button
+            className="options-picker__confirm"
+            disabled={!opcionesValidas(item, opciones)}
+            onClick={() => add()}
+          >
+            <span>{t('pedido.confirmarAgregar')}</span>
+            <strong>{money.format(item.precio)}</strong>
+          </button>
+        </div>
+      )}
+      {abierto && !tieneOpciones && (
         <div
           className="variant-picker"
           aria-label={categoria === 'pizzas' ? t('pedido.tamano') : t('pedido.base')}

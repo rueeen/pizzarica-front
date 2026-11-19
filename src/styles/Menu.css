@@ -538,3 +538,44 @@
 .search-results .category-content + .category-content {
   margin-top: 56px;
 }
+
+.options-picker {
+  width: min(340px, calc(100vw - 48px));
+  max-height: 65vh;
+  overflow-y: auto;
+}
+.options-picker fieldset {
+  margin: 0 0 12px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.options-picker legend {
+  font-weight: 700;
+}
+.options-picker__values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.options-picker__values label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.options-picker__values label:has(input:checked) {
+  background: var(--amarillo);
+  font-weight: 700;
+}
+.options-picker__values label:focus-within {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+.options-picker > button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
