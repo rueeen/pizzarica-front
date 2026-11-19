@@ -155,6 +155,8 @@ export const textos = {
 Object.assign(textos.es, {
   'pedido.comoPedir': 'Cómo pedir',
   'pedido.agregar': 'Agregar',
+  'pedido.elegirOpciones': 'Elige tus opciones',
+  'pedido.confirmarAgregar': 'Agregar al pedido',
   'pedido.titulo': 'Tu pedido',
   'pedido.vacio': 'Aún no agregas productos. Elígelos desde la carta.',
   'pedido.total': 'Total',
@@ -185,6 +187,8 @@ Object.assign(textos.es, {
 Object.assign(textos.en, {
   'pedido.comoPedir': 'How to order',
   'pedido.agregar': 'Add',
+  'pedido.elegirOpciones': 'Choose your options',
+  'pedido.confirmarAgregar': 'Add to order',
   'pedido.titulo': 'Your order',
   'pedido.vacio': "You haven't added anything yet. Pick items from the menu.",
   'pedido.total': 'Total',
@@ -215,6 +219,8 @@ Object.assign(textos.en, {
 Object.assign(textos.pt, {
   'pedido.comoPedir': 'Como pedir',
   'pedido.agregar': 'Adicionar',
+  'pedido.elegirOpciones': 'Escolha suas opções',
+  'pedido.confirmarAgregar': 'Adicionar ao pedido',
   'pedido.titulo': 'Seu pedido',
   'pedido.vacio': 'Você ainda não adicionou nada. Escolha itens do cardápio.',
   'pedido.total': 'Total',

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePedido } from '../context/PedidoContext';
 import { useIdioma } from '../i18n/IdiomaContext';
 import { nombreProducto, nombreVariante } from './Menu';
+import { buscarProducto, nombreOpciones } from '../utils/opcionesPedido';
 import { whatsappUrl } from '../data/site';
 import { agregados, categoriasConAgregados, productos } from '../data/carta';
 const money = new Intl.NumberFormat('es-CL', {
@@ -141,7 +142,7 @@ export default function PedidoPanel({ onClose }) {
           seleccionados.reduce((suma, agregado) => suma + agregado.precio, 0)) *
         item.cantidad;
       return [
-        `• ${item.cantidad}x ${nombreProducto(item.id, idioma)}${item.variante ? ` (${nombreVariante(item.variante, idioma, t)})` : ''} - ${money.format(subtotal)}`,
+        `• ${item.cantidad}x ${nombreProducto(item.id, idioma)}${item.opciones ? ` (${nombreOpciones(buscarProducto(item.id), item.opciones, idioma)})` : item.variante ? ` (${nombreVariante(item.variante, idioma, t)})` : ''} - ${money.format(subtotal)}`,
         ...seleccionados.map(
           (agregado) =>
             `   + ${agregado.nombre[idioma] ?? agregado.nombre.es} ${money.format(agregado.precio)}`,
@@ -192,7 +193,14 @@ export default function PedidoPanel({ onClose }) {
               <li key={item.key}>
                 <div>
                   <strong>{nombre}</strong>
-                  {item.variante && <small> ({nombreVariante(item.variante, idioma, t)})</small>}
+                  {item.opciones ? (
+                    <small>
+                      {' '}
+                      ({nombreOpciones(buscarProducto(item.id), item.opciones, idioma)})
+                    </small>
+                  ) : (
+                    item.variante && <small> ({nombreVariante(item.variante, idioma, t)})</small>
+                  )}
                 </div>
                 <div className="order-line__actions">
                   <span className="quantity">
